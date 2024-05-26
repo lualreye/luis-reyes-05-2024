@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { ref, watch, nextTick, onUnmounted, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables, ChartOptions } from 'chart.js';
 import usePokemonDetail from '@/composables/usePokemonDetail';
 
 Chart.register(...registerables);
@@ -9,7 +9,7 @@ Chart.register(...registerables);
 const route = useRoute();
 const pokeNumber = Number(route.params.id);
 const { pokemonDetail } = usePokemonDetail(pokeNumber);
-const chartInstance = ref<Chart | null>(null);
+const chartInstance = ref<Chart<'radar'> | null>(null);
 const audio = ref<HTMLAudioElement | null>(null);
 
 function playSound(): void {
@@ -36,7 +36,29 @@ function renderChart() {
           if (chartInstance.value) {
             chartInstance.value.destroy();
           }
-          chartInstance.value = new Chart(ctx, {
+          const options: ChartOptions<'radar'> = {
+            scales: {
+              r: {
+                angleLines: {
+                  display: false,
+                },
+                suggestedMin: 0,
+                suggestedMax: 150,
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                },
+              },
+            },
+          };
+
+          chartInstance.value = new Chart<'radar'>(ctx, {
             type: 'radar',
             data: {
               labels: pokemonDetail.value.stats.map(stat => stat.stat.name),
@@ -49,17 +71,7 @@ function renderChart() {
                 },
               ],
             },
-            options: {
-              scales: {
-                r: {
-                  angleLines: {
-                    display: false,
-                  },
-                  suggestedMin: 0,
-                  suggestedMax: 150,
-                },
-              },
-            },
+            options: options,
           });
         }
       }
@@ -74,8 +86,12 @@ watch(pokemonDetail, (newValue) => {
 });
 
 onMounted(() => {
-  if (pokemonDetail.value) {
-    renderChart();
+  renderChart();
+});
+
+onUnmounted(() => {
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
   }
 });
 </script>

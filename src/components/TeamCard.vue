@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables, ChartOptions } from 'chart.js';
 import usePokemonDetail from '@/composables/usePokemonDetail';
 
 Chart.register(...registerables);
@@ -17,7 +17,7 @@ const props = defineProps({
 const router = useRouter();
 const { pokemonDetail } = usePokemonDetail(props.pokeNumber);
 const audio = ref<HTMLAudioElement | null>(null);
-const chartInstance = ref<Chart | null>(null);
+const chartInstance = ref<Chart<'radar'> | null>(null);
 const updateSignal = ref(0); 
 
 function removePokemon(): void {
@@ -52,6 +52,29 @@ function renderChart() {
           if (chartInstance.value) {
             chartInstance.value.destroy();
           }
+
+          const options: ChartOptions<'radar'> = {
+            scales: {
+              r: {
+                angleLines: {
+                  display: false,
+                },
+                suggestedMin: 0,
+                suggestedMax: 150,
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                },
+              },
+            },
+          };
+
           chartInstance.value = new Chart(ctx, {
             type: 'radar',
             data: {
@@ -65,17 +88,7 @@ function renderChart() {
                 },
               ],
             },
-            options: {
-              scales: {
-                r: {
-                  angleLines: {
-                    display: false,
-                  },
-                  suggestedMin: 0,
-                  suggestedMax: 150,
-                },
-              },
-            },
+            options: options,
           });
         }
       }
