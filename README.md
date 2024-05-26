@@ -13,15 +13,15 @@ This project is a Pokémon Store application designed to fetch and display Poké
 ## Technologies Used
 
 - **TypeScript:** For safe and scalable application building.
-- **React:** A JavaScript library for building user interfaces.
-- **Redux:** For state management across the application.
+- **Vuejs:** A JavaScript library for building user interfaces.
+- **Pinia:** For state management across the application.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js
-- npm or yarn
+- npm or yarn or pnpm
 
 ### Installation
 
@@ -49,3 +49,7 @@ This project is a Pokémon Store application designed to fetch and display Poké
 ## API Reference
 
 The application uses the [PokéAPI](https://pokeapi.co/) to fetch Pokémon data.
+
+## Production
+
+The application is deployed and can be accessed at [Pokémon Store](https://master--atalana-challenge.netlify.app/).
