@@ -27,7 +27,7 @@ This project is a Pokémon Store application designed to fetch and display Poké
 
 1. Clone the repository:
    bash
-   git clone https://github.com/your-username/pokemon-store.git
+   git clone https://github.com/lualreye/luis-reyes-05-2024.git
 
 2. Navigate to the project directory:
    ```bash
@@ -35,14 +35,14 @@ This project is a Pokémon Store application designed to fetch and display Poké
    ```
 3. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 ### Running the Application
 
 1. Start the development server:
    ```bash
-   npm start
+   pnpm start
    ```
 2. Open `http://localhost:3000` in your browser to view the application.
 
